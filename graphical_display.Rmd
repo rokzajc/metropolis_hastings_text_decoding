@@ -1,0 +1,75 @@
+---
+title: "Graphic display"
+author: "Rok Zajc"
+date: "2025-01-03"
+output: html_document
+---
+
+```{r, echo= F, message = F}
+library(kableExtra)
+library(knitr)
+library(htmltools)
+```
+
+
+
+```{r recho= F, message = F}
+prevod_1 <- read.csv("DN5_prevod.csv")
+prevod_1 <- prevod_1[, -which(names(prevod_1) == "X")]
+
+```
+
+```{r echo= F, message = F}
+# Prikaz tabele s kableExtra
+prevod_1 %>%
+  kable(
+    caption = "Tabela dekodiranih vrednosti",  
+    align = "c",  
+    col.names = c("Originalni znak", "Nov ključ")  
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),  
+    full_width = FALSE,  
+    position = "center"  
+  )
+
+```
+
+```{r}
+ena_sim <- read.csv("DN5_ena_sim.csv")
+
+ena_sim <- ena_sim[ , -1]
+
+```
+
+```{r}
+plot(
+  ena_sim, 
+  type = "l",       # Linijski diagram
+  xlab = "Iteracije",  # Oznaka osi x
+  ylab = "Vrednost", # Oznaka osi y
+  main = "Linijski Diagram" # Naslov grafa
+)
+```
+
+```{r, message = F, echo = F, warning = F, results='hide'}
+data <- read.csv("DN5_sim_result.csv")
+data <- data[ , -1]
+
+colnames(data) <- c("100", "500", "1000", "2000", "3000", "5000")
+
+```
+
+
+
+```{r, message = F, echo = F}
+
+boxplot(data, 
+        main = "Natančnost dekodiranja v odvisnosti od iteracij algoritma", 
+        xlab = "Število iteracij", 
+        ylab = "Natančnost", 
+        col = "lightblue",  
+        border = "black",   
+        las = 2)     
+
+```
